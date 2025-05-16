@@ -1,3 +1,5 @@
+name: Notify Discord on Assignee
+
 on:
   issues:
     types: [assigned]
@@ -5,16 +7,19 @@ on:
 jobs:
   notify:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v3
+
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '20'
+
       - name: Install dependencies
         run: npm ci
+
       - name: Notify Discord
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-          GITHUB_EVENT_PATH: ${{ github.event_path }}
         run: node notify.js
